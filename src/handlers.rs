@@ -21,6 +21,7 @@ use remove_dir_all::remove_dir_all;
 use resources;
 use std;
 use std::fs;
+
 #[cfg(any(unix))]
 use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
@@ -144,12 +145,12 @@ fn permission_denied() -> DenoError {
   ))
 }
 
-fn not_implemented() -> DenoError {
-  DenoError::from(std::io::Error::new(
-    std::io::ErrorKind::Other,
-    "Not implemented",
-  ))
-}
+// fn not_implemented() -> DenoError {
+//   DenoError::from(std::io::Error::new(
+//     std::io::ErrorKind::Other,
+//     "Not implemented",
+//   ))
+// }
 
 fn handle_exit(
   _config: Arc<IsolateState>,
@@ -865,20 +866,33 @@ fn handle_symlink(
   if !state.flags.allow_write {
     return odd_future(permission_denied());
   }
-  // TODO Use type for Windows.
-  if cfg!(windows) {
-    return odd_future(not_implemented());
-  }
-
   let msg = base.msg_as_symlink().unwrap();
   let oldname = PathBuf::from(msg.oldname().unwrap());
   let newname = PathBuf::from(msg.newname().unwrap());
-  blocking!(base.sync(), || -> OpResult {
-    debug!("handle_symlink {} {}", oldname.display(), newname.display());
-    #[cfg(any(unix))]
-    std::os::unix::fs::symlink(&oldname, &newname)?;
-    Ok(empty_buf())
-  })
+  if cfg!(windows) {
+    let linktype = String::from(msg.linktype().unwrap());
+    blocking!(base.sync(), || -> OpResult {
+      debug!("handle_symlink {} {} {}", oldname.display(), newname.display(), linktype);
+      if linktype == "dir" {
+        #[cfg(any(windows))]
+        std::os::windows::fs::symlink_dir(&oldname, &newname)?;
+      } else {
+        #[cfg(any(windows))]
+        std::os::windows::fs::symlink_file(&oldname, &newname)?;
+      }
+     
+      Ok(empty_buf())
+    })
+  } else {
+   
+    blocking!(base.sync(), || -> OpResult {
+      debug!("handle_symlink {} {}", oldname.display(), newname.display());
+      #[cfg(any(unix))]
+      std::os::unix::fs::symlink(&oldname, &newname)?;
+      Ok(empty_buf())
+    })
+  }
+ 
 }
 
 fn handle_read_link(

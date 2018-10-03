@@ -2,7 +2,6 @@
 import * as fbs from "gen/msg_generated";
 import { flatbuffers } from "flatbuffers";
 import * as dispatch from "./dispatch";
-import * as util from "./util";
 
 /**
  * Synchronously creates newname as a symbolic link to oldname.
@@ -41,16 +40,19 @@ function req(
   newname: string,
   type?: string
 ): [flatbuffers.Builder, fbs.Any, flatbuffers.Offset] {
-  // TODO Use type for Windows.
-  if (type) {
-    return util.notImplemented();
-  }
+  let type_;
   const builder = new flatbuffers.Builder();
   const oldname_ = builder.createString(oldname);
   const newname_ = builder.createString(newname);
+  if (type) {
+    type_ = builder.createString(type);
+  }
   fbs.Symlink.startSymlink(builder);
   fbs.Symlink.addOldname(builder, oldname_);
   fbs.Symlink.addNewname(builder, newname_);
+  if (type) {
+    fbs.Symlink.addLinktype(builder, type_ as number);
+  }
   const msg = fbs.Symlink.endSymlink(builder);
   return [builder, fbs.Any.Symlink, msg];
 }

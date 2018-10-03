@@ -219,6 +219,7 @@ table ReadlinkRes {
 table Symlink {
   oldname: string;
   newname: string;
+  linktype: string;
 }
 
 table Stat {
