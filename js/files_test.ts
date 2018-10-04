@@ -1,7 +1,7 @@
 // Copyright 2018 the Deno authors. All rights reserved. MIT license.
 
 import * as deno from "deno";
-import { test, assert, assertEqual } from "./test_util.ts";
+import { test, testPerm, assert, assertEqual } from "./test_util.ts";
 
 test(function filesStdioFileDescriptors() {
   assertEqual(deno.stdin.fd, 0);
@@ -19,8 +19,11 @@ test(async function filesCopyToStdout() {
   console.log("bytes written", bytesWritten);
 });
 
-test(async function createFileSuccess() {
+testPerm({ write: true }, async function createFileSuccess() {
   const path = deno.makeTempDirSync() + "/dir.txt";
   const f = await deno.create(path);
   assert(f instanceof deno.File);
+  const fileInfo = deno.statSync(path);
+  assert(fileInfo.len === 0);
+  assert(fileInfo.isFile());
 });
