@@ -241,6 +241,7 @@ init:
   - ps: Invoke-Expression $env:PS_UTILS
   - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Value 65534
   - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Value 30
+  - ps: RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
 
   # Make git check out symlinks (not placeholder text files).
   - git config --global core.symlinks true
