@@ -37,8 +37,12 @@ testPerm({ net: true }, async function netDialListen() {
   conn.close();
 });
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 testPerm({ net: true }, async function netCloseReadSuccess() {
-  const addr = "127.0.0.1:45000";
+  const addr = "127.0.0.1:1001";
   const listener = deno.listen("tcp", addr);
   const closeDeferred = deferred();
   const closeReadDeferred = deferred();
