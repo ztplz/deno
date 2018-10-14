@@ -69,7 +69,7 @@ testPerm({ net: true }, async function netDialListen() {
 // });
 
 testPerm({ net: true }, async function netDoubleCloseRead() {
-  const addr = "127.0.0.1:4500";
+  const addr = "127.0.0.1:45000";
   const listener = deno.listen("tcp", addr);
   const closeDeferred = deferred();
   listener.accept().then(async conn => {
