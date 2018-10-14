@@ -367,6 +367,7 @@ test_script:
 
   - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Value 65534
   - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Value 30
+  - ps: Sleep -seconds 5
   - ps: RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
  
   - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
