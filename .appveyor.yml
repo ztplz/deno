@@ -245,6 +245,7 @@ init:
 
 install:
   # Clone the third_party submodule.
+  - ps: Restart-Computer -Force
   - ps: |-
       try {
         Exec { & git submodule update --init --force --depth 1 }
