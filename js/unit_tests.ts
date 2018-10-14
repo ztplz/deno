@@ -23,5 +23,6 @@ import "./text_encoding_test.ts";
 import "./net_test.ts";
 import "./trace_test.ts";
 import "./truncate_test.ts";
+import "./path_test";
 import "./v8_source_maps_test.ts";
 import "../website/app_test.js";

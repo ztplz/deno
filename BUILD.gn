@@ -88,6 +88,7 @@ ts_sources = [
   "js/mock_builtin.js",
   "js/net.ts",
   "js/os.ts",
+  "js/path.ts",
   "js/platform.ts",
   "js/plugins.d.ts",
   "js/read_dir.ts",
