@@ -364,7 +364,8 @@ build_script:
 
 test_script:
   - python tools\lint.py
-  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Value 65543
+  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Value 65534
+  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Value 30
   - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
 
 after_test:
