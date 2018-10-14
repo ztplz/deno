@@ -38,7 +38,7 @@ testPerm({ net: true }, async function netDialListen() {
 });
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 testPerm({ net: true }, async function netCloseReadSuccess() {
@@ -68,7 +68,7 @@ testPerm({ net: true }, async function netCloseReadSuccess() {
   // Ensure closeRead does not impact write
   await conn.write(new Uint8Array([4, 5, 6]));
   await closeDeferred.promise;
-  await sleep(1000);
+  await sleep(10000);
   listener.close();
   conn.close();
 });
