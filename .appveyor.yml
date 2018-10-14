@@ -365,8 +365,8 @@ build_script:
 test_script:
   - python tools\lint.py
 
-  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Value 65534
-  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Value 30
+  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort" -Value 65534 -Force
+  - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Value 30 -Force
   - ps: Sleep -seconds 5
   - ps: RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
  
