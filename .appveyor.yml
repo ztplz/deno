@@ -369,7 +369,7 @@ test_script:
   - ps: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay" -Value 30 -Force
   - ps: Start-Sleep 5
   # - RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
-  - ps: "C:\Windows\System32\RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters"
+  - ps: "C:\Windows\System32\RUNDLL32.EXE“ user32.dll,UpdatePerUserSystemParameters
  
   - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
 
