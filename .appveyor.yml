@@ -370,9 +370,12 @@ test_script:
   - ps: Start-Sleep 5
   - ps: RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
   - ps: Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort"
+  try {
+     - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
+  } catch {
+    Get-Counter -Counter \TCPv4\*
+  }
  
-  - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
-
 after_test:
   # Delete the the rollup cache, which is unreliable, so that it doesn't get
   # persisted in the appveyor cache.
