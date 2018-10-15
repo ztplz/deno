@@ -28,7 +28,7 @@ testPerm({ net: true }, async function netDialListen() {
   // it requires a second call to get the EOF. Either ReadResult to be an
   // integer in which 0 signifies EOF or the handler should be modified so that
   // EOF is properly transmitted.
-//   assertEqual(false, readResult.eof);
+  assertEqual(false, readResult.eof);
 
   const readResult2 = await conn.read(buf);
   assertEqual(true, readResult2.eof);
