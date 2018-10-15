@@ -370,8 +370,8 @@ test_script:
   - ps: Start-Sleep 5
   - ps: RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
   - ps: Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort"
-  - ps: netstat -n
   - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
+  - ps: netstat -n
   
   - ps: Get-Counter -Counter \TCPv4\*
  
