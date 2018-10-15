@@ -9,20 +9,20 @@ testPerm({ net: true }, function netListenClose() {
   listener.close();
 });
 
-// testPerm({ net: true }, async function netDialListen() {
-//   const addr = "127.0.0.1:4500";
-//   const listener = deno.listen("tcp", addr);
-//   listener.accept().then(async conn => {
-//     await conn.write(new Uint8Array([1, 2, 3]));
-//     conn.close();
-//   });
-//   const conn = await deno.dial("tcp", addr);
-//   const buf = new Uint8Array(1024);
-//   const readResult = await conn.read(buf);
-//   assertEqual(3, readResult.nread);
-//   assertEqual(1, buf[0]);
-//   assertEqual(2, buf[1]);
-//   assertEqual(3, buf[2]);
+testPerm({ net: true }, async function netDialListen() {
+  const addr = "127.0.0.1:4501";
+  const listener = deno.listen("tcp", addr);
+  listener.accept().then(async conn => {
+    await conn.write(new Uint8Array([1, 2, 3]));
+    conn.close();
+  });
+  const conn = await deno.dial("tcp", addr);
+  const buf = new Uint8Array(1024);
+  const readResult = await conn.read(buf);
+  assertEqual(3, readResult.nread);
+  assertEqual(1, buf[0]);
+  assertEqual(2, buf[1]);
+  assertEqual(3, buf[2]);
 
   // TODO Currently ReadResult does not properly transmit EOF in the same call.
   // it requires a second call to get the EOF. Either ReadResult to be an
@@ -30,19 +30,19 @@ testPerm({ net: true }, function netListenClose() {
   // EOF is properly transmitted.
 //   assertEqual(false, readResult.eof);
 
-//   const readResult2 = await conn.read(buf);
-//   assertEqual(true, readResult2.eof);
+  const readResult2 = await conn.read(buf);
+  assertEqual(true, readResult2.eof);
 
-//   listener.close();
-//   conn.close();
-// });
+  listener.close();
+  conn.close();
+});
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 testPerm({ net: true }, async function netCloseReadSuccess() {
-  const addr = "127.0.0.1:4500";
+  const addr = "127.0.0.1:4502";
   const listener = deno.listen("tcp", addr);
   const closeDeferred = deferred();
   const closeReadDeferred = deferred();
