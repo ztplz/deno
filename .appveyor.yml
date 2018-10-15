@@ -373,7 +373,7 @@ test_script:
   try {
      - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
   } catch {
-    Get-Counter -Counter \TCPv4\*
+    - ps: Get-Counter -Counter \TCPv4\*
   }
  
 after_test:
