@@ -372,6 +372,9 @@ test_script:
   - ps: Start-Sleep 5
   - ps: RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
   - ps: Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "MaxUserPort"
+  - ps: Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpTimedWaitDelay"
+  - ps: Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpNumConnections"
+  - ps: Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "TcpMaxDataRetransmissions"
   - ps: Exec { & python tools\test.py $env:DENO_BUILD_PATH }
   - ps: netstat -n
   
