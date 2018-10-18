@@ -70,6 +70,10 @@ export class DenoHeaders implements domTypes.Headers {
     this.headerMap.delete(newname);
   }
 
+  entries(): IterableIterator<[string, string]> {
+    return this.headerMap.entries();
+  }
+
   get(name: string): string | null {
     const [newname] = this.normalizeParams(name);
     const value = this.headerMap.get(newname);
@@ -81,9 +85,17 @@ export class DenoHeaders implements domTypes.Headers {
     return this.headerMap.has(newname);
   }
 
+  keys(): IterableIterator<string> {
+    return this.headerMap.keys();  
+  }
+
   set(name: string, value: string): void {
     const [newname, newvalue] = this.normalizeParams(name, value);
     this.headerMap.set(newname, newvalue);
+  }
+
+  values(): IterableIterator<string> {
+    return this.headerMap.values();
   }
 
   forEach(
@@ -94,6 +106,10 @@ export class DenoHeaders implements domTypes.Headers {
     this.headerMap.forEach((value, name) => {
       callbackfn(value, name, this);
     });
+  }
+
+  [Symbol.iterator](): IterableIterator<[string, string]> {
+    return this.headerMap.entries();
   }
 }
 
