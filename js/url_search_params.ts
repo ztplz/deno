@@ -1,4 +1,6 @@
 // Copyright 2018 the Deno authors. All rights reserved. MIT license.
+import { CreateIterableIterator } from "./util";
+
 export class URLSearchParams {
   private params: Array<[string, string]> = [];
 
@@ -151,10 +153,10 @@ export class URLSearchParams {
    *         console.log(key);
    *       }
    */
-  *keys(): Iterable<string> {
-    for (const entry of this.params) {
-      yield entry[0];
-    }
+  keys(): IterableIterator<string> {
+    const list = this.params.map(param => param[0]);
+    const iterators = list.values();
+    return new CreateIterableIterator(iterators);
   }
 
   /** Returns an iterator allowing to go through all values contained
@@ -164,10 +166,10 @@ export class URLSearchParams {
    *         console.log(value);
    *       }
    */
-  *values(): Iterable<string> {
-    for (const entry of this.params) {
-      yield entry[1];
-    }
+  values(): IterableIterator<string> {
+    const list = this.params.map(param => param[1]);
+    const iterators = list.values();
+    return new CreateIterableIterator(iterators);
   }
 
   /** Returns an iterator allowing to go through all key/value
@@ -177,8 +179,9 @@ export class URLSearchParams {
    *         console.log(key, value);
    *       }
    */
-  *entries(): Iterable<[string, string]> {
-    yield* this.params;
+  entries(): IterableIterator<[string, string]> {
+    const iterators = this.params.values();
+    return new CreateIterableIterator(iterators);
   }
 
   /** Returns an iterator allowing to go through all key/value
@@ -188,8 +191,8 @@ export class URLSearchParams {
    *         console.log(key, value);
    *       }
    */
-  *[Symbol.iterator](): Iterable<[string, string]> {
-    yield* this.params;
+  [Symbol.iterator](): IterableIterator<[string, string]> {
+    return this.entries();
   }
 
   /** Returns a query string suitable for use in a URL.
