@@ -1,8 +1,10 @@
 // Copyright 2018 the Deno authors. All rights reserved. MIT license.
-import { CreateIterableIterator } from "./util";
+import { DomIterableMixin } from "./mixins/dom_iterable";
 
-export class URLSearchParams {
-  private params: Array<[string, string]> = [];
+const params = Symbol("url_search_params array");
+
+class URLSearchParamsBase {
+  private [params]: Array<[string, string]> = [];
 
   constructor(init: string | string[][] | Record<string, string> = "") {
     if (typeof init === "string") {
@@ -42,7 +44,7 @@ export class URLSearchParams {
    *       searchParams.append('name', 'second');
    */
   append(name: string, value: string): void {
-    this.params.push([name, value]);
+    this[params].push([name, value]);
   }
 
   /** Deletes the given search parameter and its associated value,
@@ -52,9 +54,9 @@ export class URLSearchParams {
    */
   delete(name: string): void {
     let i = 0;
-    while (i < this.params.length) {
-      if (this.params[i][0] === name) {
-        this.params.splice(i, 1);
+    while (i < this[params].length) {
+      if (this[params][i][0] === name) {
+        this[params].splice(i, 1);
       } else {
         i++;
       }
@@ -68,7 +70,7 @@ export class URLSearchParams {
    */
   getAll(name: string): string[] {
     const values = [];
-    for (const entry of this.params) {
+    for (const entry of this[params]) {
       if (entry[0] === name) {
         values.push(entry[1]);
       }
@@ -82,7 +84,7 @@ export class URLSearchParams {
    *       searchParams.get('name');
    */
   get(name: string): string | null {
-    for (const entry of this.params) {
+    for (const entry of this[params]) {
       if (entry[0] === name) {
         return entry[1];
       }
@@ -97,7 +99,7 @@ export class URLSearchParams {
    *       searchParams.has('name');
    */
   has(name: string): boolean {
-    return this.params.some(entry => entry[0] === name);
+    return this[params].some(entry => entry[0] === name);
   }
 
   /** Sets the value associated with a given search parameter to the
@@ -119,80 +121,9 @@ export class URLSearchParams {
    *       searchParams.sort();
    */
   sort(): void {
-    this.params = this.params.sort(
+    this[params] = this[params].sort(
       (a, b) => (a[0] === b[0] ? 0 : a[0] > b[0] ? 1 : -1)
     );
-  }
-
-  /** Calls a function for each element contained in this object in
-   * place and return undefined. Optionally accepts an object to use
-   * as this when executing callback as second argument.
-   *
-   *       searchParams.forEach((value, key, parent) => {
-   *         console.log(value, key, parent);
-   *       });
-   *
-   */
-  forEach(
-    callbackfn: (value: string, key: string, parent: URLSearchParams) => void,
-    // tslint:disable-next-line:no-any
-    thisArg?: any
-  ) {
-    if (typeof thisArg !== "undefined") {
-      callbackfn = callbackfn.bind(thisArg);
-    }
-    for (const [key, value] of this.entries()) {
-      callbackfn(value, key, this);
-    }
-  }
-
-  /** Returns an iterator allowing to go through all keys contained
-   * in this object.
-   *
-   *       for (const key of searchParams.keys()) {
-   *         console.log(key);
-   *       }
-   */
-  keys(): IterableIterator<string> {
-    const list = this.params.map(param => param[0]);
-    const iterators = list.values();
-    return new CreateIterableIterator(iterators);
-  }
-
-  /** Returns an iterator allowing to go through all values contained
-   * in this object.
-   *
-   *       for (const value of searchParams.values()) {
-   *         console.log(value);
-   *       }
-   */
-  values(): IterableIterator<string> {
-    const list = this.params.map(param => param[1]);
-    const iterators = list.values();
-    return new CreateIterableIterator(iterators);
-  }
-
-  /** Returns an iterator allowing to go through all key/value
-   * pairs contained in this object.
-   *
-   *       for (const [key, value] of searchParams.entries()) {
-   *         console.log(key, value);
-   *       }
-   */
-  entries(): IterableIterator<[string, string]> {
-    const iterators = this.params.values();
-    return new CreateIterableIterator(iterators);
-  }
-
-  /** Returns an iterator allowing to go through all key/value
-   * pairs contained in this object.
-   *
-   *       for (const [key, value] of searchParams[Symbol.iterator]()) {
-   *         console.log(key, value);
-   *       }
-   */
-  [Symbol.iterator](): IterableIterator<[string, string]> {
-    return this.entries();
   }
 
   /** Returns a query string suitable for use in a URL.
@@ -200,7 +131,7 @@ export class URLSearchParams {
    *        searchParams.toString();
    */
   toString(): string {
-    return this.params
+    return this[params]
       .map(
         tuple =>
           `${encodeURIComponent(tuple[0])}=${encodeURIComponent(tuple[1])}`
@@ -208,3 +139,11 @@ export class URLSearchParams {
       .join("&");
   }
 }
+
+// @internal
+// tslint:disable:max-line-length
+// tslint:disable-next-line:variable-name
+export const URLSearchParams = DomIterableMixin<string, string, typeof URLSearchParamsBase>(
+  URLSearchParamsBase,
+  params
+);
