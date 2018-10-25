@@ -90,7 +90,7 @@ export interface ProgressEventInit extends EventInit {
   total?: number;
 }
 
-export interface URLSearchParams extends DomIterable<string, string>{
+export interface URLSearchParams extends DomIterable<string, string> {
   /**
    * Appends a specified key/value pair as a new search parameter.
    */
@@ -101,7 +101,7 @@ export interface URLSearchParams extends DomIterable<string, string>{
    */
   delete(name: string): void;
   /** Returns an iterator allowing to go through all key/value pairs
-   * contained in this URLSearchParams object. The both the key and 
+   * contained in this URLSearchParams object. The both the key and
    * value of each pairs are ByteString objects.
    */
   entries(): IterableIterator<[string, string]>;

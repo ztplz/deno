@@ -41,5 +41,5 @@ window.fetch = fetch_.fetch;
 // runtime library
 window.Headers = fetch_.Headers as domTypes.HeadersConstructor;
 window.Blob = blob.DenoBlob;
-// tslint:disable-next-line:max-line-length 
+// tslint:disable-next-line:max-line-length
 window.URLSearchParams = urlSearchParams_.URLSearchParams as domTypes.URLSearchParamsConstructor;

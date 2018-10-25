@@ -143,7 +143,8 @@ class URLSearchParamsBase {
 // @internal
 // tslint:disable:max-line-length
 // tslint:disable-next-line:variable-name
-export const URLSearchParams = DomIterableMixin<string, string, typeof URLSearchParamsBase>(
-  URLSearchParamsBase,
-  params
-);
+export const URLSearchParams = DomIterableMixin<
+  string,
+  string,
+  typeof URLSearchParamsBase
+>(URLSearchParamsBase, params);
