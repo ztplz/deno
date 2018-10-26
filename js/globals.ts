@@ -6,7 +6,7 @@ import { globalEval } from "./global_eval";
 import { libdeno } from "./libdeno";
 import * as textEncoding from "./text_encoding";
 import * as timers from "./timers";
-import * as urlSearchParams_ from "./url_search_params";
+import * as urlSearchParams from "./url_search_params";
 import * as domTypes from "./dom_types";
 
 // During the build process, augmentations to the variable `window` in this
@@ -42,4 +42,4 @@ window.fetch = fetch_.fetch;
 window.Headers = fetch_.Headers as domTypes.HeadersConstructor;
 window.Blob = blob.DenoBlob;
 // tslint:disable-next-line:max-line-length
-window.URLSearchParams = urlSearchParams_.URLSearchParams as domTypes.URLSearchParamsConstructor;
+window.URLSearchParams = urlSearchParams.URLSearchParams as domTypes.URLSearchParamsConstructor;

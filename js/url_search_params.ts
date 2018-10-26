@@ -116,10 +116,14 @@ class URLSearchParamsBase {
 
   /** Sort all key/value pairs contained in this object in place and
    * return undefined. The sort order is according to Unicode code
-   * points of the keys.
+   * points of the keys. The relative order between name-value pairs
+   * with equal names must be preserved.
    *
    *       searchParams.sort();
    */
+  // TODO(ztplz): The sort method of Array in v8 is not unstable. It may cause
+  // the relative order of the array to be disordereduse, use mergesort
+  // instead of it.
   sort(): void {
     this[params] = this[params].sort(
       (a, b) => (a[0] === b[0] ? 0 : a[0] > b[0] ? 1 : -1)
@@ -140,8 +144,6 @@ class URLSearchParamsBase {
   }
 }
 
-// @internal
-// tslint:disable:max-line-length
 // tslint:disable-next-line:variable-name
 export const URLSearchParams = DomIterableMixin<
   string,
