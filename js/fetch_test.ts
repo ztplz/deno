@@ -34,18 +34,26 @@ testPerm({ net: true }, async function fetchBlob() {
   assertEqual(blob.size, Number(headers.get("Content-Length")));
 });
 
-testPerm({ net: true }, async function responseClone() {
-  const response = await fetch("http://localhost:4545/package.json");
-  const response1 = response.clone();
-  assert(response !== response1);
-  assertEqual(response.status, response1.status);
-  assertEqual(response.statusText, response1.statusText);
-  const ab = await response.arrayBuffer();
-  const ab1 = await response1.arrayBuffer();
-  for (let i = 0; i < ab.byteLength; i++) {
-    assertEqual(ab[i], ab1[i]);
-  }
-});
+// const defaultValues = { 
+//   "type" : "default",
+//   "url" : "",
+//   "ok" : true,
+//   "status" : 200,
+//   "statusText" : "OK"
+// };
+
+// testPerm({ net: true }, async function responseClone() {
+//   const response = new 
+//   const response1 = response.clone();
+//   assert(response !== response1);
+//   assertEqual(response.status, response1.status);
+//   assertEqual(response.statusText, response1.statusText);
+//   const ab = await response.arrayBuffer();
+//   const ab1 = await response1.arrayBuffer();
+//   for (let i = 0; i < ab.byteLength; i++) {
+//     assertEqual(ab[i], ab1[i]);
+//   }
+// });
 
 // Logic heavily copied from web-platform-tests, make
 // sure pass mostly header basic test
