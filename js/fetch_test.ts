@@ -34,7 +34,7 @@ testPerm({ net: true }, async function fetchBlob() {
   assertEqual(blob.size, Number(headers.get("Content-Length")));
 });
 
-// const defaultValues = { 
+// const defaultValues = {
 //   "type" : "default",
 //   "url" : "",
 //   "ok" : true,
